@@ -1,0 +1,40 @@
+
+#Port Scanner I built to scan a range of ports
+import socket
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+ports = [] # empty list to store open ports
+
+
+
+port_min = 0
+port_max = 6000
+
+while True:
+    validate_ip = input("please enter the ip address you want to search:")
+    if validate_ip.search (validate_ip):
+        print("IP address is valid")
+        break
+
+min_sockets = int(input("Please enter your starting port :"))
+max_sockets = int(input("please enter your end port :"))
+
+for i in range(min_sockets,max_sockets):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(0.5)
+
+    if i<0 or i>6000:
+        print("Ports out of range")
+    else:
+        result = s.connect_ex ((validate_ip, i))
+        if result == 0:
+                print(f"Port {i} is OPEN on {validate_ip}!")
+                ports.append(i)
+
+
+        else:
+                print(f"Port {i} is CLOSED or Filtered.")
+                pass
+        s.close()
+print(f"All open ports are {ports}")
