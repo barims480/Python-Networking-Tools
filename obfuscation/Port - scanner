@@ -1,6 +1,8 @@
-
-#Port Scanner I built to scan a range of ports
 import socket
+import re
+
+initialize_ip = re.compile("^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
+port_range_pattern = re.compile("([0-9]+)-([0-9]+)")
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -12,15 +14,17 @@ port_min = 0
 port_max = 6000
 
 while True:
-    validate_ip = input("please enter the ip address you want to search:")
-    if validate_ip.search (validate_ip):
-        print("IP address is valid")
+    validate_ip = input("Please enter the IP address: ")
+    if initialize_ip.search(validate_ip):
+        print(f"The address {validate_ip} is valid")
         break
+    else:
+        print("Invalid IP format. Example: 192.168.1.1")
 
 min_sockets = int(input("Please enter your starting port :"))
 max_sockets = int(input("please enter your end port :"))
 
-for i in range(min_sockets,max_sockets):
+for i in range(min_sockets,max_sockets +1 ):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(0.5)
 
@@ -37,4 +41,4 @@ for i in range(min_sockets,max_sockets):
                 print(f"Port {i} is CLOSED or Filtered.")
                 pass
         s.close()
-print(f"All open ports are {ports}")
+print(f"All open ports are", ports)
